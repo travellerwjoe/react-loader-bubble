@@ -1,5 +1,5 @@
 {
-  "name": "react-loader",
+  "name": "react-loader-bubble",
   "version": "1.0.0",
   "description": "A loading component for React.",
   "main": "dist/bundle.js",
