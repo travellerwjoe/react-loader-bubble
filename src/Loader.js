@@ -89,7 +89,7 @@ class Loader extends Component {
   }
 
   static defaultProps = {
-    color: '#3da5d9',
+    color: '#3da5d9',    
     size: 'normal',
     loading: false,
     text: '',
@@ -105,13 +105,6 @@ class Loader extends Component {
       this.container = document.createElement('div')
       document.body.appendChild(this.container)
     }
-  }
-
-  shouldComponentUpdate(nextProps) {
-    if (this.props.loading !== nextProps.loading) {
-      return true
-    }
-    return false
   }
 
   render() {
@@ -143,12 +136,21 @@ class Loader extends Component {
       )
     }
 
+    if ((children && wrap) || children.length >= 2) {
+      return (
+        <Div position="relative">
+          {children}
+          <LoadingComponent {...loadingProps} />
+        </Div>
+      )
+    }
+
     return React.Children.map(children, (child, index) => {
       const loadingComponent = (
         <LoadingComponent key={index} {...loadingProps} />
       )
 
-      if (!wrap && child.props.children) {
+      if (!wrap) {
         const Wrapper = ({ ...childProps }) =>
           React.cloneElement(
             child,
@@ -170,13 +172,6 @@ class Loader extends Component {
 
         return <Component />
       }
-
-      return (
-        <Div position="relative">
-          {React.cloneElement(child, { ...props })}
-          {loadingComponent}
-        </Div>
-      )
     })
   }
 }
