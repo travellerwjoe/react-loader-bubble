@@ -6,7 +6,6 @@ import glam, { Div } from 'glamorous'
 
 const Container = glam.div(
   {
-    position: 'absolute',
     left: 0,
     top: 0,
     margin: 'auto',
@@ -17,8 +16,9 @@ const Container = glam.div(
     height: '100%',
     width: '100%',
   },
-  ({ background }) => ({
+  ({ background, isGlobal }) => ({
     background: background,
+    position: isGlobal ? 'fixed' : 'absolute',
   }),
 )
 
@@ -67,9 +67,10 @@ const LoadingComponent = ({
   text,
   indicator,
   background,
+  isGlobal = false,
 }) =>
   loading ? (
-    <Container background={background}>
+    <Container background={background} isGlobal={isGlobal}>
       <Div display="flex" flexDirection="column" alignItems="center">
         {indicator ? indicator : <Dot size={size} color={color} />}
         {text && <LoadingText color={color}>{text}</LoadingText>}
@@ -131,7 +132,7 @@ class Loader extends Component {
 
     if (!children) {
       return ReactDOM.createPortal(
-        <LoadingComponent {...loadingProps} />,
+        <LoadingComponent {...loadingProps} isGlobal={true} />,
         this.container,
       )
     }
